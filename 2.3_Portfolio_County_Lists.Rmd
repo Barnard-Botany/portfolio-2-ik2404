@@ -1,0 +1,163 @@
+---
+title: "2.3 Portfolio County List and 3 Lists from 2.1"
+output: html_notebook
+---
+```{r}
+library(vegan)
+library(labdsv)
+library(plyr)
+library(BIEN)
+```
+
+
+I will be analyzing species data from three counties of Hawaii: Honolulu County, Hawaii County, and Kauai County.
+
+```{r}
+Honolulu <- BIEN_occurrence_county(country="United States", state="Hawaii", county = "Honolulu")
+head(Honolulu)
+tail(Honolulu)
+Hawaii <- BIEN_occurrence_county(country="United States", state="Hawaii", county = "Hawaii")
+head(Hawaii )
+tail(Hawaii)
+attributes(Hawaii )
+Kauai <- BIEN_occurrence_county(country="United States", state="Hawaii", county = "Kauai")
+head(Kauai)
+tail(Kauai)
+attributes(Kauai)
+```
+
+```{r}
+Honolulu.occ=Honolulu[c(1)]
+head(Honolulu.occ)
+Hawaii.occ=Hawaii[c(1)]
+head(Hawaii.occ)
+Kauai.occ=Kauai[c(1)]
+head(Kauai.occ)
+```
+
+```{r}
+Honolulu.ab=count(Honolulu.occ)
+head(Honolulu.ab)
+Hawaii.ab=count(Hawaii.occ)
+head(Hawaii.ab)
+Kauai.ab=count(Kauai.occ)
+head(Kauai.ab)
+```
+
+#Renaming Columns
+```{r}
+Honolulu.ab=data.frame("Honolulu", Honolulu.ab)
+head(Honolulu.ab)
+names(Honolulu.ab)<-c("ListID", "SpeciesID", "Freq")
+head(Honolulu.ab)
+Hawaii.ab=data.frame("Hawaii", Hawaii.ab)
+names(Hawaii.ab)<-c("ListID", "SpeciesID", "Freq")
+head(Hawaii.ab)
+Kauai.ab=data.frame("Kauai", Kauai.ab)
+names(Kauai.ab)<-c("ListID", "SpeciesID", "Freq")
+head(Kauai.ab)
+```
+
+#Converting lists into a matrix
+```{r}
+allcounty.ab=rbind(Honolulu.ab, Hawaii.ab, Kauai.ab)
+head(allcounty.ab)
+tail(allcounty.ab)
+dim(allcounty.ab)
+counties.ab<-matrify(allcounty.ab)
+head(counties.ab)
+dim(counties.ab)
+```
+
+```{r}
+simpson<-diversity(counties.ab, index = "simpson")
+shannon<-diversity(counties.ab, index = "shannon")
+simpson
+shannon
+bray = vegdist(counties.ab, "bray")
+bray
+jaccard = vegdist(counties.ab, "jaccard", binary=T)
+jaccard
+```
+Simpson's diversity index is a measure of diversity that takes into acccount the number of species present along with the relative abundance of each species. The value of this index ranges between 0 and 1. The greater the value, the greater the sample diversity. The sample diversity in the Honolulu county and the Kauai county is much higher than the sample diversity in the Hawaii county. It's interesting that the sample collected from the Hawaii county is less diverse compared to the samples collected from Honolulu and Kauai. Interestingly, Hawaii is the biggest in terms of area out of the 3 counties and one may think that since it has a larger area, it would have more species, but this is not correct acccording to the Simpson diversity index.
+
+Similar to the Simpson index, the Shannon idex takes into account species richness and proportion of each species within a community. The higher the Shannon index, the more diverse the community is. The Shannon index reinforces the calculated Simpson index because both the samples collected in Honolulu and Kauai have a much higher Shannon index than the sample collected from the Hawaii county.
+
+The Bray index indiactes the dissimilarity between two different samples. The Bray dissimilarity falls between 0 and 1, where 0 means the 2 samples have the same composition (i.e. they share all the species) and 1 means that two samples do not share any species. According to the Bray index, all 3 samples do not share a lot of species. In fact, for all 3 indices provided comparing two counties at a time, the Bray index is closer to 1 than it is to 0, indicating that when comparing two of the counties I am studying, the counties do not share a lot of species. Overall, each county seems to have different species. Honolulu and Hawaii share more species than Honolulu and Kauai. 
+
+The Jaccard index also allows us to compare which species are shared between two saomples and reinforces the calculations of the Bray index. 
+
+
+
+
+
+I will now compare my list from Welikia, Plant-O-Matic, and the plants I use in 1 day. For Welikia, I decided to analyze the plant species from 1609 that would be found in present day Riverside Park (from 110 St to 133 St). For Plant-O-Matic, I decided to analyze the trees found near Barnard College. 
+
+```{r}
+Welikia=read.csv("Welikia.csv")
+Plant_O_Matic=read.csv("Plant-O-Matic.csv")
+OneDayPlants=read.csv("24hourPlants.csv")
+```
+
+
+```{r}
+Welikia_species=paste(Welikia$Scientific_name)
+Plant_O_Matic_species=paste(Plant_O_Matic$Scientific.Name)
+OneDayPlants_species=paste(OneDayPlants$Scientific.Name)
+```
+
+```{r}
+head(Welikia_species)
+head(Plant_O_Matic_species)
+head (OneDayPlants_species)
+```
+
+Abundance data
+
+```{r}
+Welikia_ab=count(Welikia_species)
+Welikia_ab=data.frame("Welikia", Welikia_ab)
+names(Welikia_ab)<-c("ListID", "SpeciesID", "Freq")
+
+Plant_O_Matic_ab=count(Plant_O_Matic_species)
+Plant_O_Matic_ab=data.frame("Plant_O_Matic", Plant_O_Matic_ab)
+names(Plant_O_Matic_ab)<-c("ListID", "SpeciesID", "Freq")
+
+OneDayPlants_ab=count(OneDayPlants_species)
+OneDayPlants_ab=data.frame("OneDayPlants", OneDayPlants_ab)
+names(OneDayPlants_ab)<-c("ListID", "SpeciesID", "Freq")
+
+Welikia_ab
+Plant_O_Matic_ab
+OneDayPlants_ab
+
+```
+
+
+```{r}
+alllists.ab=rbind(Welikia_ab, Plant_O_Matic_ab, OneDayPlants_ab)
+alllists.ab
+tail(alllists.ab)
+dim(alllists.ab)
+listsmatrix_ab<-matrify(alllists.ab)
+listsmatrix_ab
+
+```
+
+```{r}
+simpson<-diversity(listsmatrix_ab, index = "simpson")
+shannon<-diversity(listsmatrix_ab, index = "shannon")
+simpson
+shannon
+bray = vegdist(listsmatrix_ab, "bray")
+bray
+jaccard = vegdist(listsmatrix_ab, "jaccard", binary=T)
+jaccard
+```
+The Simpson index indicates that all three lists are diverse, with the most diverse list being the one from Welikia and the least diverse being the one from Plant-O-Matic. Interestingly, the Shannon index indicated that the Plant-O-Matic sample was more diverse than the Welikia sample. For both the Shannon and Simpson indices, the OneDayPlants list was in between Welikia and Plant-O-Matic in terms of diversity. (I am a little confuse on how to differentiate Shannon and Simpson)
+
+For both the Bray and Jaccard index, an index of 1 was calculated. In terms of the Bray index, 1 indicates that the the two lists share no species in common. Overall, none of my three lists share any species, indicating that the plants I use everyday are different from the plants in Manhattan in 1609 and the plants located near Barnard. I had predicted that the plant species from Manhttan in 1609 and the tree species located near Barnard College would have some overlap, given the promixity of Barnard College and Riverside Park. However, this was not the case. (What is the difference between Bray and Jaccard?)
+
+
+
+
