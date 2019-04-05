@@ -83,9 +83,11 @@ Simpson's diversity index is a measure of diversity that takes into acccount the
 
 Similar to the Simpson index, the Shannon idex takes into account species richness and proportion of each species within a community. The higher the Shannon index, the more diverse the community is. The Shannon index reinforces the calculated Simpson index because both the samples collected in Honolulu and Kauai have a much higher Shannon index than the sample collected from the Hawaii county.
 
-The Bray index indiactes the dissimilarity between two different samples. The Bray dissimilarity falls between 0 and 1, where 0 means the 2 samples have the same composition (i.e. they share all the species) and 1 means that two samples do not share any species. According to the Bray index, all 3 samples do not share a lot of species. In fact, for all 3 indices provided comparing two counties at a time, the Bray index is closer to 1 than it is to 0, indicating that when comparing two of the counties I am studying, the counties do not share a lot of species. Overall, each county seems to have different species. Honolulu and Hawaii share more species than Honolulu and Kauai. 
+The Bray index indiactes the dissimilarity between two different samples. The Bray dissimilarity falls between 0 and 1, where 0 means the 2 samples have the same composition (i.e. they share all the species) and 1 means that two samples do not share any species. According to the Bray index, all 3 samples do not share a lot of species. In fact, for all 3 indices provided comparing two counties at a time, the Bray index is closer to 1 than it is to 0, indicating that when comparing two of the counties I am studying, the counties do not share a lot of species. Overall, each county seems to have different species. Honolulu and Hawaii share more species than Honolulu and Kauai.
 
 The Jaccard index also allows us to compare which species are shared between two saomples and reinforces the calculations of the Bray index. 
+
+# You interpreted these correctly with one exception: the Bray index seems to indicate that Honolulu and Hawaii are the LEAST similar (.9885793), and that Honolulu and Kauai are more similar (.8965986).
 
 
 
@@ -156,8 +158,20 @@ jaccard
 ```
 The Simpson index indicates that all three lists are diverse, with the most diverse list being the one from Welikia and the least diverse being the one from Plant-O-Matic. Interestingly, the Shannon index indicated that the Plant-O-Matic sample was more diverse than the Welikia sample. For both the Shannon and Simpson indices, the OneDayPlants list was in between Welikia and Plant-O-Matic in terms of diversity. (I am a little confuse on how to differentiate Shannon and Simpson)
 
+# The Shannon and Simpson indices are basically telling you the same thing, just according to different equations. The tricky thing is in the definition of "diversity." According to these indices, "diversity" not only means how many unique species there are (species richness), but also how abundant each of those individual species are compared to the total number of ALL individuals of ALL species, which is sometimes referred to as "evenness." So the true definiton of diversity is the combination of species richness and species evenness. 
+
+# For example, if you have an area with 300 species and 1000 total individuals, but 701 of those individuals belong to only one species, and the remaining 299 species only have 1 individual each, then your area has a high species richness but a low species evenness, so its diversity would be low.
+
+# Quoting Dr. Callahan's definitions:
+# The Shannon index: "examines each species for the proportion of individuals that it contributes to the total individuals of all species in the sample"
+# The Simpson index: "based on the likelihood that any two randomly encountered individuals are the same species."
+
+# As for interpreting their values, you have it right: the higher the number for both indices, the more diverse your sample.
+
 For both the Bray and Jaccard index, an index of 1 was calculated. In terms of the Bray index, 1 indicates that the the two lists share no species in common. Overall, none of my three lists share any species, indicating that the plants I use everyday are different from the plants in Manhattan in 1609 and the plants located near Barnard. I had predicted that the plant species from Manhttan in 1609 and the tree species located near Barnard College would have some overlap, given the promixity of Barnard College and Riverside Park. However, this was not the case. (What is the difference between Bray and Jaccard?)
 
+# Based on the Simpson and Shannon indices, it looks like Plant_O_Matic was the MOST diverse list (.9629630 (Simpson) and 3.295837(Shannon) were highest).
 
+# The difference between Bray and Jaccard is kind of tricky, but it seems like you understood the most important part: for Bray, 0 = more similar, 1 = less similar. For Jaccard, the opposite is true. Look back at Dr. Callahan's explanations of these indices in the 2.1 notebook. The important thing to realize is that the Bray-Curtis index incorporates both presence-absence AND abundance in its calculation, whereas the Jaccard index only uses presense-absence data.
 
-
+# Great job! All of your code worked perfectly.
